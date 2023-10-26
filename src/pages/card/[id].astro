@@ -1,0 +1,74 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import { fetchApi } from "../../scripts/api";
+import type { Card } from "../../lib/config";
+import { endpoint } from "../../lib/config";
+
+export const getStaticPaths = async () => {
+  const cards = await fetchApi(endpoint);
+
+  return cards.map((card: Card) => {
+    return {
+      params: { id: card.id },
+      props: { card }
+    }
+  })
+}
+
+const { card } = Astro.props;
+
+interface PageStatus {
+  title: string;
+  description: string;
+}
+
+const pageStatus: PageStatus = {
+  title: `${ card.name }`,
+  description: "JavaScriptのフレームワーク「Astro」の学習のために作ったサイトです"
+}
+---
+
+<PageLayout title={ pageStatus.title } description={ pageStatus.description }>
+  <section class="card">
+    <dl class="data-list">
+      <div class="data-list__rows">
+        <dt><span>名</span><span>前</span>:</dt><dd>{ card.name }</dd>
+      </div>
+      <div class="data-list__rows">
+        <dt><span>所</span><span>属</span>:</dt><dd>{ card.company }</dd>
+      </div>
+      <div class="data-list__rows">
+        <dt><span>部</span><span>署</span>:</dt><dd>{ card.division }</dd>
+      </div>
+      <div class="data-list__rows">
+        <dt><span>役</span><span>職</span>:</dt><dd>{ card.title }</dd>
+      </div>
+    </dl>
+  </section>
+
+</PageLayout>
+
+<style lang="scss">
+  .data-list__rows + .data-list__rows {
+    margin-top: 0.5rem;
+  }
+
+  .data-list {
+    &__rows {
+      display: flex;
+      align-items: center;
+      gap: 0 1.5rem;
+    }
+
+    dt {
+      width: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    dd {
+      font-weight: bold;
+    }
+  }
+</style>
