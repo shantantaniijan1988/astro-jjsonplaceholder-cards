@@ -1,0 +1,19 @@
+---
+import Navigation from "./Navigation.astro";
+---
+
+<header class="header">
+  <div class="header__inner">
+    <Navigation />
+  </div>
+</header>
+
+<style lang="scss">
+  @use "../styles/colors" as *;
+
+  .header {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid $color-black;
+  }
+</style>
