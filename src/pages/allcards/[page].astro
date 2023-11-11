@@ -1,8 +1,7 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
 import { fetchApi } from "../../scripts/api";
-import { endpoint } from "../../lib/config";
-import type { Card } from "../../lib/config";
+import { endpoint, type Card } from "../../lib/config";
 import type { GetStaticPathsOptions } from "astro";
 
 export const getStaticPaths = async ({ paginate }: GetStaticPathsOptions) => {
@@ -13,7 +12,6 @@ export const getStaticPaths = async ({ paginate }: GetStaticPathsOptions) => {
 
 const { page } = Astro.props;
 
-const allCards = page.data;
 const paginationNumbers: Array<string> = Array.from({ length: page.lastPage }, (_, i) => String(i + 1));
 
 interface PageStatus {
@@ -31,7 +29,7 @@ const pageStatus: PageStatus = {
   <h1 class="section__title">{ pageStatus.title }<span>（敬称略）</span></h1>
   <ul class="cards">
     {
-      allCards.map((card: Card) => (
+      page.data.map((card: any) => (
         <li class="card"><a href={ `/card/${card.id}` }>{ card.name } / { card.company }所属</a></li>
       ))
     }
